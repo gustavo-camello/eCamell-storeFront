@@ -1,13 +1,14 @@
 import React from "react";
 
+import Footer from "./Footer";
 import Header from "./Header";
 
 function MainLayout({ children }) {
   return (
-    <div>
+    <div className="dark:bg-gray-800">
       <Header />
-      <h1>From Page Layouts</h1>
       {children}
+      <Footer />
     </div>
   );
 }
