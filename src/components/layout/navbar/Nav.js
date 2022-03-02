@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -36,8 +36,10 @@ function changeDarkMode() {
 }
 
 function Nav() {
-  const user = useCurrentUser();
-  console.log(user);
+  useEffect(() => {
+    const user = useCurrentUser();
+    console.log(user);
+  }, []);
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleDrawer = () => {
@@ -87,7 +89,7 @@ function Nav() {
 
               <div className="flex justify-evenly items-center border w-20 sm:w-1/5 border-blue-500 md:hidden">
                 <span className="mx-2">
-                  {user ? (
+                  {1 === 2 ? (
                     <NavLink href="/account">
                       <FontAwesomeIcon icon={faUser} />
                     </NavLink>
@@ -110,7 +112,7 @@ function Nav() {
               </div>
             </div>
           </div>
-
+          {/* 
           <div className="items-center md:flex justify-around w-1/2 lg:w-2/5 xl:w-2/6 border border-green-500 hidden">
             <div className="flex items-center py-2">
               {user ? (
@@ -140,14 +142,13 @@ function Nav() {
 
             <div className="flex items-center py-2">
               <NavLink href="/cart">
-                {/* <CartButton /> */}{" "}
                 <TextWithIcon
                   icon={<FontAwesomeIcon icon={faCartShopping} />}
                   text="Cart"
                 />
               </NavLink>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="mt-3 md:hidden">

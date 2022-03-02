@@ -31,10 +31,11 @@ export const CURRENT_USER_QUERY = gql`
 
 export function useCurrentUser() {
   let currentUserId;
-  if (typeof window !== "undefined") {
-    currentUserId = localStorage.getItem("userId");
-    // console.log(currentUserId);
-  }
+  // if (typeof window !== "undefined") {
+  //   currentUserId = localStorage.getItem("userId");
+  //   // console.log(currentUserId);
+  // }
+  currentUserId = window.localStorage.getItem("userId");
 
   const { data } = useQuery(CURRENT_USER_QUERY, {
     variables: { id: "6210ea9b222c85378c600781" },
