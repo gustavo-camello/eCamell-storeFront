@@ -11,6 +11,7 @@ import {
 import StarRating from "components/StartRating";
 import { formatMoney } from "lib/FormatMoney";
 import Loading from "components/Loading";
+import { productsClient } from "lib/ApolloClient";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -32,6 +33,7 @@ function SingleProduct({ id }) {
     variables: {
       id,
     },
+    client: productsClient,
   });
 
   let product;

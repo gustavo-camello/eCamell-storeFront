@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSearch,
@@ -12,8 +12,9 @@ import "react-modern-drawer/dist/index.css";
 
 import NavLink from "./NavLink";
 import Logo from "./Logo";
-import { useCurrentUser, CURRENT_USER_QUERY } from "hooks/useCurrentUser";
 import TextWithIcon from "components/TextWithIcon";
+import { useCurrentUser } from "hooks/useCurrentUser";
+import Signout from "components/user/Signout";
 
 function changeDarkMode() {
   if (localStorage.theme === "light") {
@@ -36,15 +37,13 @@ function changeDarkMode() {
 }
 
 function Nav() {
-  useEffect(() => {
-    const user = useCurrentUser();
-    console.log(user);
-  }, []);
-
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };
+
+  const currentUser = useCurrentUser();
 
   return (
     <nav className="bg-white-400 dark:bg-gray-800 border-b-2 border-gray-500">
@@ -94,7 +93,7 @@ function Nav() {
                       <FontAwesomeIcon icon={faUser} />
                     </NavLink>
                   ) : (
-                    <NavLink href="/signin">
+                    <NavLink href="/account">
                       <FontAwesomeIcon icon={faUser} />
                     </NavLink>
                   )}
@@ -112,18 +111,21 @@ function Nav() {
               </div>
             </div>
           </div>
-          {/* 
+
           <div className="items-center md:flex justify-around w-1/2 lg:w-2/5 xl:w-2/6 border border-green-500 hidden">
             <div className="flex items-center py-2">
-              {user ? (
-                <NavLink href="/account">
-                  <TextWithIcon
-                    icon={<FontAwesomeIcon icon={faUser} />}
-                    text="My Account"
-                  />
-                </NavLink>
+              {currentUser ? (
+                <>
+                  <NavLink href="/account">
+                    <TextWithIcon
+                      icon={<FontAwesomeIcon icon={faUser} />}
+                      text="My Account"
+                    />
+                  </NavLink>
+                  <Signout />
+                </>
               ) : (
-                <NavLink href="/signin">
+                <NavLink href="/account">
                   <TextWithIcon
                     icon={<FontAwesomeIcon icon={faUser} />}
                     text="Signin"
@@ -148,7 +150,7 @@ function Nav() {
                 />
               </NavLink>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div className="mt-3 md:hidden">

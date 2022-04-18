@@ -1,22 +1,24 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { gql, useMutation } from "@apollo/client";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 import { CURRENT_USER_QUERY } from "hooks/useCurrentUser";
 
-const SIGNIN_MUTATION = gql`
+export const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-    authenticateUserWithPassword(email: $email, password: $password) {
-      ... on UserAuthenticationWithPasswordSuccess {
+    authenticateCustomerWithPassword(email: $email, password: $password) {
+      ... on CustomerAuthenticationWithPasswordSuccess {
         item {
           id
           email
-          name
+          firstName
         }
       }
-      ... on UserAuthenticationWithPasswordFailure {
+      ... on CustomerAuthenticationWithPasswordFailure {
         code
         message
       }
@@ -25,21 +27,20 @@ const SIGNIN_MUTATION = gql`
 `;
 
 function SignIn() {
-  const [signIn, { data }] = useMutation(SIGNIN_MUTATION, {
-    refetchQueries: [{ query: CURRENT_USER_QUERY }],
-  });
+  const router = useRouter();
 
-  const handleSubmit = async (values, setSubmitting) => {
-    await signIn({ variables: values });
+  const [signIn] = useMutation(SIGNIN_MUTATION);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    signIn({
+      variables: { email: values.email, password: values.password },
+      refetchQueries: [CURRENT_USER_QUERY],
+    });
 
     setSubmitting(false);
+    // TODO: redirect to user account
+    router.push("/");
   };
-
-  if (data?.authenticateUserWithPassword) {
-    const userId = data?.authenticateUserWithPassword?.item?.id;
-    localStorage.setItem("userId", userId?.toString());
-    console.log("seted to local");
-  }
 
   const initialValues = { email: "", password: "" };
 
@@ -69,17 +70,10 @@ function SignIn() {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
-              handleSubmit(values, setSubmitting);
-              resetForm({ values: "" });
-            }}
+            onSubmit={handleSubmit}
           >
             {({ isSubmitting }) => (
               <Form className="text-center">
-                {data?.authenticateUserWithPassword.__typename ===
-                  "UserAuthenticationWithPasswordFailure" && (
-                  <h2>There is an error</h2>
-                )}
                 <div>
                   <label htmlFor="email-address" className="sr-only">
                     Email address

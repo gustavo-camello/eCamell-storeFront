@@ -6,6 +6,7 @@ import { faExclamation, faFire } from "@fortawesome/free-solid-svg-icons";
 
 import HomeBanner from "../components/HomeBanner";
 import ProductsList from "components/products/ProductsList";
+import { productsClient } from "lib/ApolloClient";
 
 const ALL_PRODUCTS_QUERY = gql`
   query ALL_PRODUCTS_QUERY {
@@ -24,7 +25,9 @@ const ALL_PRODUCTS_QUERY = gql`
 `;
 
 function index() {
-  const { data, loading, error } = useQuery(ALL_PRODUCTS_QUERY);
+  const { data, loading, error } = useQuery(ALL_PRODUCTS_QUERY, {
+    client: productsClient,
+  });
 
   let products;
   if (data) {
