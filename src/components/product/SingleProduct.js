@@ -9,13 +9,15 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 import StarRating from "components/StartRating";
-import { formatMoney } from "lib/FormatMoney";
 import Loading from "components/Loading";
 import { productsClient } from "lib/ApolloClient";
+import AddToCart from "./AddToCart";
+import DisplayMoney from "components/DisplayMoney";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
     Product(where: { id: $id }) {
+      id
       name
       price
       description
@@ -29,7 +31,7 @@ const SINGLE_ITEM_QUERY = gql`
 `;
 
 function SingleProduct({ id }) {
-  const { data, loading, error } = useQuery(SINGLE_ITEM_QUERY, {
+  const { data, loading } = useQuery(SINGLE_ITEM_QUERY, {
     variables: {
       id,
     },
@@ -39,7 +41,6 @@ function SingleProduct({ id }) {
   let product;
   if (data) {
     product = data?.Product;
-    console.log({ data, loading });
   }
 
   if (loading) return <Loading />;
@@ -84,11 +85,9 @@ function SingleProduct({ id }) {
             </p>
             <div className="flex mt-5 border-t pt-5">
               <span className="title-font font-medium text-2xl text-gray-900 dark:text-yellow-500">
-                {formatMoney(product?.price)}
+                <DisplayMoney amount={product?.price} />
               </span>
-              <button className="flex ml-auto text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded">
-                Add To Cart
-              </button>
+              <AddToCart productId={product?.id} />
               <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                 <FontAwesomeIcon icon={faHeart} />
               </button>

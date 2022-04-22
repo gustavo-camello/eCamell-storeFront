@@ -1,7 +1,7 @@
 import React from "react";
 
 import Link from "next/link";
-import { formatMoney } from "lib/FormatMoney";
+import DisplayMoney from "components/DisplayMoney";
 
 function Product({ product }) {
   return (
@@ -23,7 +23,7 @@ function Product({ product }) {
               {product.name}
             </h2>
             <p className="mt-2 text-xl font-bold dark:text-yellow-600">
-              {formatMoney(product.price)}
+              <DisplayMoney amount={product?.price} />
             </p>
           </div>
         </div>
