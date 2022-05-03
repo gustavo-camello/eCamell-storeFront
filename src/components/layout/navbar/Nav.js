@@ -6,15 +6,28 @@ import {
   faMoon,
   faCartShopping,
   faBars,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import { gql, useQuery } from "@apollo/client";
 
 import NavLink from "./NavLink";
 import Logo from "./Logo";
 import TextWithIcon from "components/TextWithIcon";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import Signout from "components/user/Signout";
+import Search from "./Search";
+import { productsClient } from "lib/ApolloClient";
+
+const QUERY_PRODUCTS_CATEGORIES = gql`
+  query {
+    allProductCategories {
+      name
+      id
+    }
+  }
+`;
 
 function changeDarkMode() {
   if (localStorage.theme === "light") {
@@ -39,6 +52,15 @@ function changeDarkMode() {
 function Nav() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { data } = useQuery(QUERY_PRODUCTS_CATEGORIES, {
+    client: productsClient,
+  });
+
+  let categories;
+  if (data) {
+    categories = data.allProductCategories;
+  }
+
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -46,7 +68,7 @@ function Nav() {
   const currentUser = useCurrentUser();
 
   return (
-    <nav className="bg-white-400 dark:bg-gray-800 border-b-2 border-gray-500">
+    <nav className="bg-white-400 dark:bg-gray-900 border-b-2 border-gray-500">
       <div className="container px-2 md:px-10 pt-3 mx-auto border border-green-800">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center">
           <div className="flex items-center justify-between w-full md:w-4/5">
@@ -69,22 +91,8 @@ function Nav() {
               </div>
 
               {/* <!-- Search input on desktop screen --> */}
-              <div className="hidden mx-4 md:block w-full border border-yellow-300">
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                    <FontAwesomeIcon
-                      icon={faSearch}
-                      className="mr-2 text-gray-400"
-                    />
-                  </span>
-
-                  <input
-                    type="text"
-                    className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                    placeholder="Search for anything"
-                  />
-                </div>
-              </div>
+              {/* TODO: Search functionality */}
+              {/* <Search open={true} /> */}
 
               <div className="flex justify-evenly items-center border w-20 sm:w-1/5 border-blue-500 md:hidden">
                 <span className="mx-2">
@@ -116,7 +124,7 @@ function Nav() {
             <div className="flex items-center py-2">
               {currentUser ? (
                 <>
-                  <NavLink href="/account">
+                  <NavLink href="/account/myaccount">
                     <TextWithIcon
                       icon={<FontAwesomeIcon icon={faUser} />}
                       text="My Account"
@@ -134,6 +142,12 @@ function Nav() {
               )}
             </div>
             <div className="flex items-center py-2">
+              <NavLink href="/wishList">
+                <TextWithIcon
+                  icon={<FontAwesomeIcon icon={faHeart} />}
+                  text="WishList"
+                />
+              </NavLink>
               <span onClick={changeDarkMode}>
                 <TextWithIcon
                   icon={<FontAwesomeIcon icon={faMoon} />}
@@ -161,7 +175,7 @@ function Nav() {
 
             <input
               type="text"
-              className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+              className="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
               placeholder="Search"
             />
           </div>
@@ -203,46 +217,17 @@ function Nav() {
           </ul>
         </Drawer>
 
-        <ul className="py-3 overflow-y-auto whitespace-nowrap scroll-hidden flex justify-between ">
-          <li>
-            <NavLink
-              className="mx-4 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:my-0"
-              href="/products"
+        <ul className="py-3 overflow-y-auto whitespace-nowrap scroll-hidden flex justify-center">
+          {categories?.map((category) => (
+            <li
+              key={category.id}
+              className="mx-4 text-base uppercase text-black hover:text-gray-600 dark:text-white  dark:hover:text-gray-200"
             >
-              Mouses
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="mx-4 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:my-0"
-              href="/products"
-            >
-              Keyboards
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="mx-4 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:my-0"
-              href="/products"
-            >
-              CPU's
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className="mx-4 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:my-0"
-              href="/products"
-            >
-              Cables
-            </NavLink>
-          </li>
-
-          <NavLink
-            className="mx-4 text-sm leading-5 text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-indigo-400 hover:underline md:my-0"
-            href="/products"
-          >
-            Products
-          </NavLink>
+              <NavLink href={`/category/${category.name}`}>
+                {category.name}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>

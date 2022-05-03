@@ -1,18 +1,13 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import {
-  faFacebookF,
-  faTwitter,
-  faInstagram,
-} from "@fortawesome/free-brands-svg-icons";
+import { Rating } from "react-simple-star-rating";
 
-import StarRating from "components/StartRating";
 import Loading from "components/Loading";
 import { productsClient } from "lib/ApolloClient";
 import AddToCart from "./AddToCart";
 import DisplayMoney from "components/DisplayMoney";
+import ShareProduct from "./ShareProduct";
+import AddToWishList from "./AddToWishList";
 
 const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
@@ -21,6 +16,12 @@ const SINGLE_ITEM_QUERY = gql`
       name
       price
       description
+      reviews {
+        rating
+      }
+      category {
+        name
+      }
       photo {
         image {
           publicUrlTransformed
@@ -39,15 +40,35 @@ function SingleProduct({ id }) {
   });
 
   let product;
+  let productMainCategory;
+  let reviewsRating;
+  let totalReviews;
   if (data) {
+    const reviews = data?.Product.reviews;
+
     product = data?.Product;
+    productMainCategory = data.Product.category[0].name;
+    totalReviews = reviews.length;
+
+    let initialValue = 0;
+    const allReviewsRating = reviews.reduce(
+      (acc, item) => acc + item.rating,
+      initialValue
+    );
+
+    reviewsRating = allReviewsRating / totalReviews;
   }
 
   if (loading) return <Loading />;
 
   return (
     <div className="text-gray-700 body-font overflow-hidden">
-      <div className="container px-5 py-24 mx-auto">
+      <div className="container mx-auto px-4 md:px-20">
+        <h2 className="text-2xl mt-8 text-black dark:text-white uppercase">
+          {productMainCategory}
+        </h2>
+      </div>
+      <div className="container px-5 py-10 mx-auto">
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <img
             alt="ecommerce"
@@ -56,41 +77,37 @@ function SingleProduct({ id }) {
           />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
             <h2 className="text-sm title-font text-gray-500 tracking-widest dark:text-gray-500">
-              Category Name
+              {productMainCategory}
             </h2>
             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1 dark:text-white">
               {product?.name}
             </h1>
             <div className="flex mb-4">
-              <span className="flex items-center">
-                <StarRating rating={4} />
+              <span className="flex items-center pointer-events-none">
+                <Rating
+                  initialValue={reviewsRating}
+                  size={20}
+                  transition
+                  allowHalfIcon
+                  className="mt-0 cursor-pointer"
+                />
                 <span className="text-gray-600 ml-3 dark:text-gray-400">
-                  4 Reviews
+                  {totalReviews} Reviews
                 </span>
-              </span>
-              <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
-                <a className="text-gray-500 dark:text-gray-300">
-                  <FontAwesomeIcon icon={faFacebookF} className="mr-2" />
-                </a>
-                <a className="ml-2 text-gray-500 dark:text-gray-300">
-                  <FontAwesomeIcon icon={faTwitter} className="mr-2" />
-                </a>
-                <a className="ml-2 text-gray-500 dark:text-gray-300">
-                  <FontAwesomeIcon icon={faInstagram} className="mr-2" />
-                </a>
               </span>
             </div>
             <p className="leading-relaxed dark:text-white">
               {product?.description}
             </p>
+            <div className="mt-4">
+              <ShareProduct product={product} />
+            </div>
             <div className="flex mt-5 border-t pt-5">
               <span className="title-font font-medium text-2xl text-gray-900 dark:text-yellow-500">
                 <DisplayMoney amount={product?.price} />
               </span>
               <AddToCart productId={product?.id} />
-              <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                <FontAwesomeIcon icon={faHeart} />
-              </button>
+              <AddToWishList productId={product?.id} />
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from "react";
 
 import DisplayMoney from "components/DisplayMoney";
+import { Checkout } from "components/Checkout";
 
 function Summary({ cartProducts }) {
   const cart = cartProducts?.reduce(
@@ -19,17 +20,15 @@ function Summary({ cartProducts }) {
   );
 
   return (
-    <div className="flex flex-col w-full items-center justify-center text-black">
+    <div className="flex flex-col w-full items-center justify-center text-black dark:text-white">
       <h4 className="py-8 flex justify-center items-center text-xl font-bold">
         Summary
       </h4>
-      <div className="bg-gray-200 w-full flex justify-around items-center text-xl p-4">
+      <div className="bg-gray-200 w-full flex justify-around items-center text-xl p-4 dark:text-black">
         Total
         <DisplayMoney amount={cart?.total} />
       </div>
-      <button className="w-full text-2xl font-extralight text-white bg-green-500 py-3 px-6 mt-8 focus:outline-none hover:bg-green-600 rounded">
-        Place Order
-      </button>
+      <Checkout />
     </div>
   );
 }

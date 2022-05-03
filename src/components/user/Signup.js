@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 
 import { CURRENT_USER_QUERY } from "hooks/useCurrentUser";
 import { SIGNIN_MUTATION } from "./SignIn";
+import { cartClient } from "lib/ApolloClient";
+import { useCurrentUser } from "hooks/useCurrentUser";
 
 const SIGNUP_MUTATION = gql`
   mutation SignupCustomer(
@@ -28,14 +30,28 @@ const SIGNUP_MUTATION = gql`
     ) {
       firstName
       lastName
+      id
+    }
+  }
+`;
+
+const CREATE_CART_MUTATION = gql`
+  mutation CreateCartMutation($customerId: ID!) {
+    createCart(data: { customerId: $customerId }) {
+      customerId
     }
   }
 `;
 
 function Signup() {
   const router = useRouter();
+  const currentUser = useCurrentUser();
+
   const [signup, { data, error, loading }] = useMutation(SIGNUP_MUTATION);
   const [signIn, { dataSignin }] = useMutation(SIGNIN_MUTATION);
+  const [createCart] = useMutation(CREATE_CART_MUTATION, {
+    client: cartClient,
+  });
 
   const initialValues = {
     email: "",

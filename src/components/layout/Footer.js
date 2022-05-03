@@ -6,8 +6,30 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { gql, useQuery } from "@apollo/client";
+
+import { productsClient } from "lib/ApolloClient";
+import NavLink from "./navbar/NavLink";
+
+const QUERY_PRODUCTS_CATEGORIES = gql`
+  query {
+    allProductCategories {
+      name
+      id
+    }
+  }
+`;
 
 function Footer() {
+  const { data } = useQuery(QUERY_PRODUCTS_CATEGORIES, {
+    client: productsClient,
+  });
+
+  let categories;
+  if (data) {
+    categories = data.allProductCategories;
+  }
+
   return (
     <footer className="text-gray-600 body-font mt-12 bg-gray-900">
       <div className="container px-24 py-10 mx-auto">
@@ -23,11 +45,6 @@ function Footer() {
               <li>
                 <a className="text-gray-600 hover:text-gray-800">Directions</a>
               </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">
-                  Find a Store
-                </a>
-              </li>
             </ul>
           </div>
           <div className="lg:w-1/5 md:w-1/2 w-full px-4">
@@ -35,18 +52,13 @@ function Footer() {
               Featured Categories
             </h2>
             <ul className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Cakes</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Donuts</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Chocolates</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-800">Biscuits</a>
-              </li>
+              {categories?.map((category) => (
+                <li className="text-gray-600 hover:text-gray-800">
+                  <NavLink href={`/category/${category.name}`}>
+                    {category.name}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="lg:w-1/5 md:w-1/2 w-full px-4">

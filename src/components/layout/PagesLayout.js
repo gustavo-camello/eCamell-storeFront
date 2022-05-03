@@ -5,7 +5,7 @@ import Header from "./Header";
 
 function MainLayout({ children }) {
   return (
-    <div className="dark:bg-gray-800">
+    <div className="dark:bg-gray-900">
       <Header />
       {children}
       <Footer />

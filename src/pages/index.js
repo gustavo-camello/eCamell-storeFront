@@ -15,6 +15,9 @@ const ALL_PRODUCTS_QUERY = gql`
       name
       price
       description
+      category {
+        name
+      }
       photo {
         image {
           publicUrlTransformed
