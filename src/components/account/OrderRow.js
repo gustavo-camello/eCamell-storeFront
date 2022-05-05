@@ -39,7 +39,7 @@ function OrderRow({ orderId }) {
           <td colSpan={5}>
             <div className="flex justify-center items-center">
               <div>
-                <SingleOrder id={orderId} />
+                <SingleOrder id={orderId} fromList />
               </div>
             </div>
           </td>

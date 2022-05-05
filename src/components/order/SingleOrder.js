@@ -7,7 +7,7 @@ import { useOrderDetails } from "hooks/useOrderDetails";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import DisplayMoney from "components/DisplayMoney";
 
-function SingleOrder({ id }) {
+function SingleOrder({ id, fromList }) {
   const { orderDetails, orderProducts } = useOrderDetails(id);
   const currentUser = useCurrentUser();
 
@@ -17,9 +17,14 @@ function SingleOrder({ id }) {
     <div className="text-gray-700 body-font overflow-hidden dark:text-white">
       <div className="container px-5 py-24 mx-auto">
         <div className="text-center">
-          <h1 className="font-bold text-4xl">Order Succesfully Placed</h1>
-          <p className="text-xl">Thank you for your order</p>
+          {!fromList && (
+            <>
+              <h1 className="font-bold text-4xl">Order Succesfully Placed</h1>
+              <p className="text-xl">Thank you for your order</p>
+            </>
+          )}
           <h6 className="mt-4">Order Number: # {orderDetails?.id}</h6>
+
           <ProductsList cartItems={items} />
 
           <div className="flex flex-wrap flex-col md:flex-row justify-evenly w-full border border-gray-100 bg-gray-50 px-4 py-10 dark:text-gray-700">

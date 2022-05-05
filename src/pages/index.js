@@ -15,6 +15,7 @@ const ALL_PRODUCTS_QUERY = gql`
       name
       price
       description
+      featured
       category {
         name
       }
@@ -33,8 +34,12 @@ function index() {
   });
 
   let products;
+  let featuredProducts;
   if (data) {
     products = data?.allProducts;
+    featuredProducts = products.filter((product) => product.featured);
+
+    console.log({ featuredProducts });
   }
 
   return (
@@ -54,7 +59,7 @@ function index() {
             <FontAwesomeIcon icon={faFire} className="mr-2" />
             Featured Products
           </h2>
-          <ProductsList products={products} />
+          <ProductsList products={featuredProducts} />
         </section>
       </div>
     </>

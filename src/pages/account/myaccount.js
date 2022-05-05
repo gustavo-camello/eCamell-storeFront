@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faReceipt } from "@fortawesome/free-solid-svg-icons";
 
 import MyOrders from "components/account/MyOrders";
+import MyDetails from "components/account/MyDetails";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -48,7 +49,9 @@ function myaccount() {
             </Tab>
           </Tab.List>
           <Tab.Panels className="mt-2 w-full">
-            <Tab.Panel>Content 1</Tab.Panel>
+            <Tab.Panel>
+              <MyDetails />
+            </Tab.Panel>
             <Tab.Panel>
               <MyOrders />
             </Tab.Panel>

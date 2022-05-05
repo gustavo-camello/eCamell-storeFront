@@ -1,5 +1,5 @@
 import React from "react";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
 import { productsClient } from "lib/ApolloClient";
 import { useCurrentUser } from "hooks/useCurrentUser";
@@ -68,7 +68,7 @@ function WishList() {
       <div className="container px-20 py-10 mx-auto">
         <ul className="-my-4 divide-y divide-gray-100">
           {wishListProducts?.map((item) => (
-            <Product productDetails={item} />
+            <Product productDetails={item} key={item.id} />
           ))}
         </ul>
       </div>

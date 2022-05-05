@@ -53,7 +53,10 @@ function Footer() {
             </h2>
             <ul className="list-none mb-10">
               {categories?.map((category) => (
-                <li className="text-gray-600 hover:text-gray-800">
+                <li
+                  key={category.name}
+                  className="text-gray-600 hover:text-gray-800"
+                >
                   <NavLink href={`/category/${category.name}`}>
                     {category.name}
                   </NavLink>

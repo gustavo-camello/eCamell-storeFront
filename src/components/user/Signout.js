@@ -23,7 +23,11 @@ function Signout() {
     router.push("/");
   };
 
-  return <button onClick={signoutAndRedirect}>Signout</button>;
+  return (
+    <button onClick={signoutAndRedirect} className="dark:text-white">
+      Signout
+    </button>
+  );
 }
 
 export default Signout;

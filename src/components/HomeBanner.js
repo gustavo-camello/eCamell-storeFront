@@ -1,10 +1,32 @@
 import React from "react";
+import { gql, useQuery } from "@apollo/client";
+
+import { productsClient } from "lib/ApolloClient";
+
+const STOREFRONT_DETAILS = gql`
+  query {
+    allStorefronts {
+      mainBanner {
+        publicUrlTransformed
+      }
+    }
+  }
+`;
 
 function HomeBanner() {
+  const { data: storefront } = useQuery(STOREFRONT_DETAILS, {
+    client: productsClient,
+  });
+
+  let mainBanner;
+  if (storefront) {
+    mainBanner = storefront.allStorefronts[0].mainBanner?.publicUrlTransformed;
+  }
+
   return (
     <div className="w-full h-96">
       <img
-        src="https://images.unsplash.com/photo-1607083206325-caf1edba7a0f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1477&q=80"
+        src={mainBanner}
         className="object-fit w-full h-96"
         alt="Image alt text"
       />

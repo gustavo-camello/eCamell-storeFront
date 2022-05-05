@@ -100,9 +100,6 @@ function CheckoutForm() {
   const itemsToBeRemoved = cartProducts?.map((product) => product.cartItemId);
 
   const [cleanCart] = useMutation(CLEAN_CART_MUTATION, {
-    variables: {
-      itemsIds: itemsToBeRemoved,
-    },
     client: cartClient,
   });
 
@@ -127,8 +124,13 @@ function CheckoutForm() {
     if (!error) {
       const order = await placeOrder();
 
-      // TODO: clean the cart
-      // await cleanCart();
+      console.log({ itemsToBeRemoved });
+      await cleanCart({
+        variables: {
+          ids: itemsToBeRemoved,
+        },
+      });
+
       router.push({
         pathname: "/order/[id]",
         query: { id: order?.data?.createOrder?.id },

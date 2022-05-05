@@ -51,7 +51,7 @@ function AddToWishList({ productId }) {
 
   let wishListId;
   if (data) {
-    wishListId = data.allWishLists[0].id;
+    wishListId = data.allWishLists[0]?.id;
   }
 
   const [AddToWishList] = useMutation(ADD_TO_WISHLIST_MUTATION, {
