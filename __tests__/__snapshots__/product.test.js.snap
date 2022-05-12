@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Product/> renders and match the snapshot 1`] = `
+<div>
+  <div
+    class="lg:w-1/4 md:w-1/2 p-4 w-full dark:text-white"
+  >
+    <div
+      class="cursor-pointer"
+    >
+      <div
+        class="block relative h-48 rounded overflow-hidden"
+      >
+        <img
+          alt="ecommerce"
+          class="object-cover object-center w-full h-full block"
+          src="dog.jpg"
+        />
+      </div>
+      <div
+        class="mt-4"
+      >
+        <h3
+          class="text-xs tracking-widest mb-1 dark:text-gray-400"
+        />
+        <h2
+          class="text-base capitalize dark:text-gray-200"
+        >
+          dogs are best
+        </h2>
+        <p
+          class="mt-2 text-xl font-bold text-yellow-600"
+        >
+          5000
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Product/> renders out the price tag and title 1`] = `
+<div>
+  <div
+    class="lg:w-1/4 md:w-1/2 p-4 w-full dark:text-white"
+  >
+    <div
+      class="cursor-pointer"
+    >
+      <div
+        class="block relative h-48 rounded overflow-hidden"
+      >
+        <img
+          alt="ecommerce"
+          class="object-cover object-center w-full h-full block"
+          src="dog.jpg"
+        />
+      </div>
+      <div
+        class="mt-4"
+      >
+        <h3
+          class="text-xs tracking-widest mb-1 dark:text-gray-400"
+        />
+        <h2
+          class="text-base capitalize dark:text-gray-200"
+        >
+          dogs are best
+        </h2>
+        <p
+          class="mt-2 text-xl font-bold text-yellow-600"
+        >
+          5000
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

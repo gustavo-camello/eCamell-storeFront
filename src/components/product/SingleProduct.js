@@ -9,7 +9,7 @@ import DisplayMoney from "components/DisplayMoney";
 import ShareProduct from "./ShareProduct";
 import AddToWishList from "./AddToWishList";
 
-const SINGLE_ITEM_QUERY = gql`
+export const SINGLE_ITEM_QUERY = gql`
   query SINGLE_ITEM_QUERY($id: ID!) {
     Product(where: { id: $id }) {
       id
@@ -62,7 +62,10 @@ function SingleProduct({ id }) {
   if (loading) return <Loading />;
 
   return (
-    <div className="text-gray-700 body-font overflow-hidden">
+    <div
+      className="text-gray-700 body-font overflow-hidden"
+      data-testid="singleProduct"
+    >
       <div className="container mx-auto px-4 md:px-20">
         <h2 className="text-2xl mt-8 text-black dark:text-white uppercase">
           {productMainCategory}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useCart } from "hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { useCurrentUser } from "hooks/useCurrentUser";
 import ProductsList from "./ProductsList";
 import Summary from "./Summary";
